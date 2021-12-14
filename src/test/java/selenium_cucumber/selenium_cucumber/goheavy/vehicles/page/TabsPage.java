@@ -4,4 +4,6 @@ public abstract class TabsPage extends VehiclePage {
 
     public abstract void insertValidData();
 
+    public abstract boolean systemOpensAddVehicleView();
+
 }

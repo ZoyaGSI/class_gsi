@@ -10,11 +10,11 @@ import selenium_cucumber.selenium_cucumber.goheavy.vehicles.page.*;
 
 @SuppressWarnings("unused")
 public class VehicleStep extends Steps {
-    public VehiclePage vehiclePage;
+    private VehiclePage vehiclePage;
+    private TabsPage tp;
 
     public VehicleStep() {
         vehiclePage = new VehiclePage();
-
     }
 
     public void checkPage() {
@@ -42,7 +42,8 @@ public class VehicleStep extends Steps {
 
     public void theSystemOpensTheAddVehicleView() {
         try {
-            Assert.assertTrue(vehiclePage.systemOpensAddVehicleView());
+            tp = new VehiculeInfoPage();
+            Assert.assertTrue(tp.systemOpensAddVehicleView());
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -59,7 +60,7 @@ public class VehicleStep extends Steps {
     public void userInsertsValidDataAndClicksDone() {
 
         try {
-            TabsPage tp = new VehiculeInfoPage();
+            tp = new VehiculeInfoPage();
             tp.insertValidData();
             tp = new VehiculeFeaturesPage();
             tp.insertValidData();
@@ -108,7 +109,7 @@ public class VehicleStep extends Steps {
 
     public void clicks_button_done() {
 
-        vehiclePage.clicks_button_done();
+        tp.clicks_button_done();
     }
 
     public void systemDisplaysMessage(String message) {

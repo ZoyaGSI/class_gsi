@@ -12,9 +12,8 @@ public class VehiculeFeaturesPage extends TabsPage {
 
     public VehiculeFeaturesPage() {
         super();
-        setVehiclePhotoImageXpath("//label[@class='ant-form-item-required' and "
-                + "@title='Vehicle Photo (from front driver side angle)']/ancestor::div[@class='ant-row ant-form-item']/"
-                + "descendant::input[@type='file']");
+        setVehiclePhotoImageXpath("//label[@title='Vehicle Photo (from front driver side angle)']/" +
+                "ancestor::div[@class='ant-row ant-form-item']/ descendant::input[@type='file']");
         setStepTwoFormScroll("//*[@id='step-two-form']/ancestor::div[@class='templateStyles__ContentDiv-sc-144t9h2-1 bcVeZj']");
     }
 
@@ -40,25 +39,25 @@ public class VehiculeFeaturesPage extends TabsPage {
 
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
         int randomNum = tlr.nextInt(min_val, max_val + 1);
-        sendDataToInput(getWebElement(By.xpath("//input[@id='model' and @placeholder='Enter Vehicle model']")),
+        sendDataToInput(getWebElement(By.id("model")),
                 getFaker().artist().name(), null, getStepTwoFormScroll());
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='color' and @placeholder='Enter Vehicle color']")),
+        sendDataToInput(getWebElement(By.id("color")),
                 getFaker().color().name().toUpperCase(), null, getStepTwoFormScroll());
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='trim' and @placeholder='Enter Vehicle trim']")),
+        sendDataToInput(getWebElement(By.id("trim")),
                 getFaker().name().firstName(), null, getStepTwoFormScroll());
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='transmission' and @placeholder='Enter Vehicle transmission']")),
+        sendDataToInput(getWebElement(By.id("transmission")),
                 getFaker().name().firstName(), null, getStepTwoFormScroll());
 
         if (min_val < 145)
-            clickOn(getWebElement(By.xpath("//label[text()='Towing Kit Installed']/ancestor::div["
-                    + "@class='ant-row ant-form-item']/descendant::button[@type='button' and @class='ant-switch']")));
+            clickOn(getWebElement(By.xpath("//label[@title='Towing Kit Installed']/ancestor::" +
+                    "div[@class='ant-row ant-form-item']/descendant::button[@type='button']")));
 
         if (randomNum % 2 == 0)
-            clickOn(getWebElement(By.xpath("//label[text()='Liftgate Installed']/ancestor::div["
-                    + "@class='ant-row ant-form-item']/descendant::button[@type='button' and @class='ant-switch']")));
+            clickOn(getWebElement(By.xpath("//label[@title='Liftgate Installed']/ancestor::" +
+                    "div[@class='ant-row ant-form-item']/descendant::button[@type='button']")));
 
         setImage(getWebElement(By.xpath(getVehiclePhotoImageXpath())), null);
 
@@ -67,6 +66,9 @@ public class VehiculeFeaturesPage extends TabsPage {
         clickOn(getWebElement(By.xpath("//button[@type='submit']/descendant::span[text()='Next']")));
         waitForSpinningElementDissapear();
         Setup.getWait().thread(1500);
+    }
+    public boolean systemOpensAddVehicleView() {
+        return true;
     }
 
 

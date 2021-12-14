@@ -14,9 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DrivingRequirementsPage extends TabsPage {
 
-    private String vehicleInsuranceImageXpath = "//label[@class='ant-form-item-required' and "
-            + "@title='Current Insurance Certificate Picture']/ancestor::div[@class='ant-row ant-form-item']/descendant::input"
-            + "[@type='file']";
+    private String vehicleInsuranceImageXpath = "//label[@title='Current Insurance Certificate Picture']/ancestor::" +
+            "div[@class='ant-row ant-form-item']/descendant::input[@type='file']";
     private String stepThreeFormScroll = "//*[@id='step-three-form']/ancestor::div["
             + "@class='templateStyles__ContentDiv-sc-144t9h2-1 bcVeZj']";
 
@@ -38,17 +37,15 @@ public class DrivingRequirementsPage extends TabsPage {
     public void insertValidData() {
         setImage(getWebElement(By.xpath(getVehicleInsuranceImageXpath())), null);
 
-        clickOn(getWebElement(By.xpath("//input[@id='verificationDelivery']")));
-        clickOn(getWebElement(By.xpath("//input[@id='verificationLicenseTime']")));
+        clickOn(getWebElement(By.id("verificationDelivery")));
+        clickOn(getWebElement(By.id("verificationLicenseTime")));
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='insurancePolicyNo' and "
-                        + "@placeholder='Enter Insurance Policy Number']")),
+        sendDataToInput(getWebElement(By.id("insurancePolicyNo")),
                 getFaker().number().digits(12), null, getStepThreeFormScroll());
 
         Setup.getWait().thread(500);
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='insuranceCertificateCompany' and "
-                        + "@placeholder='Enter Company name']")),
+        sendDataToInput(getWebElement(By.id("insuranceCertificateCompany")),
                 getFaker().name().firstName(), null, getStepThreeFormScroll());
 
         Setup.getWait().thread(500);
@@ -61,11 +58,10 @@ public class DrivingRequirementsPage extends TabsPage {
         DateFormat short_date = DateFormat.getDateInstance(DateFormat.SHORT);
 
         //From Date
-        String by = "//input[@id='insuranceEffectiveDate' and "
-                + "@placeholder='Select Date']";
-        Setup.getActions().moveToElement(getWebElement(By.xpath(by))).build().perform();
-        Setup.getActions().click(getWebElement(By.xpath(by))).build().perform();
-        Setup.getActions().sendKeys(getWebElement(By.xpath(by)), short_date.format(getFaker().date().between(past_date, date)).toString())
+        String by = "insuranceEffectiveDate";
+        Setup.getActions().moveToElement(getWebElement(By.id(by))).build().perform();
+        Setup.getActions().click(getWebElement(By.id(by))).build().perform();
+        Setup.getActions().sendKeys(getWebElement(By.id(by)), short_date.format(getFaker().date().between(past_date, date)).toString())
                 .build().perform();
         //Date here
         int min_val = 1;
@@ -81,11 +77,10 @@ public class DrivingRequirementsPage extends TabsPage {
         Date future_date = calendar.getTime();
 
         try {
-            by = "//input[@id='insuranceExpirationDate' and "
-                    + "@placeholder='Select Date']";
-            Setup.getActions().moveToElement(getWebElement(By.xpath(by))).build().perform();
-            Setup.getActions().click(getWebElement(By.xpath(by))).build().perform();
-            Setup.getActions().sendKeys(getWebElement(By.xpath(by)), short_date.format(future_date).toString())
+            by = "insuranceExpirationDate";
+            Setup.getActions().moveToElement(getWebElement(By.id(by))).build().perform();
+            Setup.getActions().click(getWebElement(By.id(by))).build().perform();
+            Setup.getActions().sendKeys(getWebElement(By.id(by)), short_date.format(future_date).toString())
                     .build().perform();
             manageDate(false, randomNum);
         } catch (Exception e) {
@@ -94,14 +89,12 @@ public class DrivingRequirementsPage extends TabsPage {
 
         Setup.getWait().thread(500);
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='insuranceRenewal' and "
-                        + "@placeholder='Enter Insurance Renewal']")),
+        sendDataToInput(getWebElement(By.id("insuranceRenewal")),
                 getFaker().name().firstName(), null, getStepThreeFormScroll());
 
         Setup.getWait().thread(500);
 
-        sendDataToInput(getWebElement(By.xpath("//input[@id='licensePlateNo' and "
-                        + "@placeholder='Enter Vehicle License Plate Number']")),
+        sendDataToInput(getWebElement(By.id("licensePlateNo")),
                 getFaker().number().digits(6), null, getStepThreeFormScroll());
 
         Setup.getWait().thread(500);
@@ -168,5 +161,9 @@ public class DrivingRequirementsPage extends TabsPage {
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
+    }
+
+    public boolean systemOpensAddVehicleView() {
+        return true;
     }
 }
