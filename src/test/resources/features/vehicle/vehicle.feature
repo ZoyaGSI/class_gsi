@@ -25,18 +25,21 @@
 
 Feature: Add Vehicle 2.2
   As a: GoHeavy Admin / Fleet Owner
-  I Want To: add a Vehicle	
+  I Want To: add a Vehicle
   So That: a new Vehicle is registered in the system.
-  
-  Background: 
+
+  Background:
     Given Any "GoHeavy Admin / Fleet Owner" is logged
+    And The user is in "Vehicles & Insurance List" view.
 
   Scenario: Add Vehicle 2.2 -- Add Vehicle
-    Given The user is in "Vehicles & Insurance List" view.
+
     When User clicks on "Add Vehicle" button.
-    Then The system opens the "Add Vehicle" view.
-    When Hover over a Vehicle document image component with an image loaded.
-    When The user inserts valid data AND clicks on the "Done" button.
-    Then Returns to the "Vehicles & Insurance List" view and displays "A new Vehicle was successfully created.".
-    Then The System Creates a new Vehicle in "On-boarding" status.
+#    And The system opens the "Add Vehicle" view.
+    And User hover overs a Vehicle document image component with an image loaded
+    And The user inserts valid data
+    And User clicks on the "Done" button.
+    Then System returns to the "Vehicles & Insurance List" view
+    And System displays message "A new Vehicle was successfully created."
+    And The System Creates a new Vehicle in "On-boarding" status.
     And The System registers the creation date.

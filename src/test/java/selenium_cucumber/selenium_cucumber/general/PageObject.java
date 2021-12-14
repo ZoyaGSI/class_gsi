@@ -167,6 +167,48 @@ public class PageObject {
         Setup.getWait().thread(500);
     }
 
+
+    public void clickOn(WebElement element) {
+        waitForSpinningElementDissapear();
+        Setup.getWait().thread(150);
+        Setup.getActions().moveToElement(element).build().perform();
+        Setup.getActions().click(element).build().perform();
+        waitForSpinningElementDissapear();
+        Setup.getWait().thread(150);
+    }
+
+    public void sendDataToInput(WebElement element, String data, Keys key, String form) {
+        try {
+            if (element.getAttribute("value").length() > 0)
+                clear_element_text(element);
+        } catch (Exception e) {
+        }
+        scrollToWebElement(element, form);
+        if (data != null)
+            Setup.getActions().sendKeys(element, data).build().perform();
+        else
+            Setup.getActions().sendKeys(element, key).build().perform();
+    }
+
+    public  void scrollToWebElement(WebElement element, String form) {
+        Setup.getWait().thread(500);
+        int y_pos = Integer.valueOf(Setup.timeouts.get("script").toString());
+        if (element != null)
+            y_pos = element.getLocation().y;
+
+        String script = "arguments[0].scrollTo(0, " + y_pos + ");";
+        Setup.getJsExecutor().executeScript(script, getWebElement(By.xpath(form)));
+        Setup.getWait().thread(500);
+    }
+
+    public void clear_element_text(WebElement element) {
+        int length = element.getAttribute("value").length();
+        for (int i = 0; i <= length; i++) {
+            Setup.getActions().sendKeys(element, Keys.BACK_SPACE).perform();
+        }
+    }
+
+
 //    public HashMap<String, WebElement> getMenu(By by) {
 //        waitForSpinningElementDissapear();
 //        HashMap<String, WebElement> menu = new HashMap<String, WebElement>();
@@ -175,6 +217,7 @@ public class PageObject {
 //
 //        return menu;
 //    }
+
 
     public WebDriverWait getWait() {
         return wait;

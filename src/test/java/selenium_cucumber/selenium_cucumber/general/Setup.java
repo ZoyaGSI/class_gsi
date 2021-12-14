@@ -33,8 +33,8 @@ public final class Setup {
 		System.setProperty("webdriver.chrome.silentOutput", "true");
 		ChromeOptions options = new ChromeOptions();
 		timeouts = new HashMap<String, Object>();
-		timeouts.put("implicit", 50);
-		timeouts.put("pageLoad", 5000000);
+		timeouts.put("implicit", 3000);
+		timeouts.put("pageLoad", 50000000);
 		timeouts.put("script", 300000);
 		options.setCapability("timeouts", timeouts);
 		driver = new ChromeDriver(options);
