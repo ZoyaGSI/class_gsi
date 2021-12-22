@@ -63,13 +63,7 @@ public class PageObject {
     }
 
     public void submitForm(String formId) {
-        try {
-            String formXpath = "//*[@id='" + formId + "']/ancestor::div"
-                    + "[@class='templateStyles__ContentDiv-sc-144t9h2-1 bcVeZj']";
-            getWebElement(By.xpath(formXpath)).submit();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            formScrollImproved(formId, 80);
     }
 
     public void formScrollImproved(String form, int yScrollBy) {

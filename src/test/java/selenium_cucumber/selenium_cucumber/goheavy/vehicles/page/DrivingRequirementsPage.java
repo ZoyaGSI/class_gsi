@@ -4,9 +4,13 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import selenium_cucumber.selenium_cucumber.general.InputType;
 import selenium_cucumber.selenium_cucumber.general.Setup;
 
+import java.security.Key;
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +39,8 @@ public class DrivingRequirementsPage extends TabsPage {
 
 
     public void insertValidData() {
+        String formId = "step-three-form";
+
         setImage(getWebElement(By.xpath(getVehicleInsuranceImageXpath())), null);
 
         clickOn(getWebElement(By.id("verificationDelivery")));
@@ -50,39 +56,32 @@ public class DrivingRequirementsPage extends TabsPage {
 
         Setup.getWait().thread(500);
 
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.YEAR, -2);
-        Date past_date = calendar.getTime();
-        DateFormat short_date = DateFormat.getDateInstance(DateFormat.SHORT);
+
+//        Date date = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//        calendar.add(Calendar.YEAR, -2);
+//        Date past_date = calendar.getTime();
+//        DateFormat short_date = DateFormat.getDateInstance(DateFormat.SHORT);
 
         //From Date
-        String by = "insuranceEffectiveDate";
-        Setup.getActions().moveToElement(getWebElement(By.id(by))).build().perform();
-        Setup.getActions().click(getWebElement(By.id(by))).build().perform();
-        Setup.getActions().sendKeys(getWebElement(By.id(by)), short_date.format(getFaker().date().between(past_date, date)).toString())
-                .build().perform();
-        //Date here
-        int min_val = 1;
-        int max_val = 10;
-        ThreadLocalRandom tlr = ThreadLocalRandom.current();
-        int randomNum = tlr.nextInt(min_val, max_val + 1);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String date_compare = dtf.format(LocalDateTime.now());
+        String date_compared = dtf.format(LocalDateTime.now().plusYears(1));
 
-        manageDate(true, randomNum);
+        sendDataToInputImproved("Insurance Effective Date", date_compare.toString(), null,
+                InputType.input, true, formId, 40);
+        Setup.getWait().thread(1000);
+        sendDataToInputImproved("Insurance Effective Date", null, Keys.RETURN,
+                InputType.input, true, formId, 40);
+        Setup.getWait().thread(1000);
 
-        //To Date
-        calendar.add(Calendar.YEAR, 2);
-        calendar.add(Calendar.DAY_OF_YEAR, 2);
-        Date future_date = calendar.getTime();
-
+//        To Date
         try {
-            by = "insuranceExpirationDate";
-            Setup.getActions().moveToElement(getWebElement(By.id(by))).build().perform();
-            Setup.getActions().click(getWebElement(By.id(by))).build().perform();
-            Setup.getActions().sendKeys(getWebElement(By.id(by)), short_date.format(future_date).toString())
-                    .build().perform();
-            manageDate(false, randomNum);
+            sendDataToInputImproved("Insurance Expiration Date", date_compared.toString(), null,
+                    InputType.input, true, formId, 40);
+            sendDataToInputImproved("Insurance Expiration Date", null, Keys.RETURN,
+                    InputType.input, true, formId, 40);
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }
@@ -114,6 +113,10 @@ public class DrivingRequirementsPage extends TabsPage {
                 + "'ant-form-item')]/descendant::input[@type='file']")), null);
 
         Setup.getWait().thread(500);
+
+        clickOn(getWebElement(By.xpath("//button[@type='submit']/descendant::span[text()='Done']")));
+        waitForSpinningElementDissapear();
+        Setup.getWait().thread(1500);
     }
 
     private void manageDate(boolean back, int random_num) {

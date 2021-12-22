@@ -25,7 +25,7 @@ public class VehicleStep extends Steps {
 
     public void goToAccountSettingsView() {
         try {
-            Setup.getWait().thread(2500);
+//            Setup.getWait().thread(1000);
             Assert.assertTrue(vehiclePage.goToVehiclesAndInsuranceListView());
         } catch (Exception e) {
             Assert.fail(e.getMessage());

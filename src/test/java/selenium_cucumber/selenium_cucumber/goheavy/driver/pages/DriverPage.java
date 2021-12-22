@@ -57,7 +57,7 @@ public class DriverPage extends PageObject {
 	public boolean goToView() {
 		try {
 			waitForSpinningElementDissapear();
-			waitAddittionalTime();
+//			waitAddittionalTime();
 			clickOnElement(getWebElement(By.xpath(getMenuDriversLink())), true);
 			return true;
 		} catch(Exception e) {
@@ -67,7 +67,7 @@ public class DriverPage extends PageObject {
 	}
 	
 	public void waitAddittionalTime() {
-		Setup.getWait().thread(5000);
+		Setup.getWait().thread(1000);
 	}
 	
 	public void waitAddittionalShortTime() {
@@ -86,7 +86,7 @@ public class DriverPage extends PageObject {
 	public boolean userClickOnAddDriver() {
 		try {
 			waitForSpinningElementDissapear();
-			waitAddittionalTime();
+//			waitAddittionalTime();
 			clickOnElement(getWebElement(By.xpath(getAddDriverButton())), true);
 			return true;
 		} catch(Exception e) {
@@ -98,7 +98,7 @@ public class DriverPage extends PageObject {
 	public WebElement systemOpensAddDriverView() {
 		try {
 			waitForSpinningElementDissapear();
-			waitAddittionalTime();
+//			waitAddittionalTime();
 			return getWebElement(By.xpath(getAddDriverTitle()));
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -111,19 +111,16 @@ public class DriverPage extends PageObject {
 			WebElement element = getWebElement(By.xpath("//input[@id='" + id_dropdown +"' and @role='combobox']"));
 			Setup.getActions().moveToElement(element).build().perform();
 			Setup.getActions().click(element).build().perform();
-			String xpath = "//div[@role='listbox' and @id='" + id_options + "']/ancestor::div[contains(@class, "
-					+ "'ant-select-dropdown')]/descendant::div[@class='ant-select-item-option-content']";
+			String xpath = "//div[@role='listbox' and @id='" + id_options + "']/ancestor::div[contains(@class,'ant-select-dropdown')]/descendant::div[@class='ant-select-item-option-content']";
 			List<WebElement> select_elements = getWebElements(By.xpath(xpath));
 			WebElement option_element = select_elements.get(
 					getFaker().number().numberBetween(2, 5));
+			Setup.getWait().thread(750);
 			Setup.getActions().moveToElement(option_element).build().perform();
 			Setup.getActions().click(option_element).build().perform();
-			//print(select_elements.size());
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
-		//tShirtSize
-		//tShirtSize_list
 	}
 	
 	public void clear_element_text(WebElement element) {
@@ -143,24 +140,9 @@ public class DriverPage extends PageObject {
 		try {
 			waitForSpinningElementDissapear();
 			waitAddittionalTime();
-			
-			String title = "Driver Photo (including shoulders)";
-			setImageImproved(title, null);
-			//acceptImage(title); <- Using in Fleet Owner Driver Creation Process
-			
 			String formId = "driver-form";
-			
-			String name = getFaker().name().firstName();
-			Setup.setKeyValueStore("driverName", name);
-			
+
 			if (update) {
-				sendDataToInputByWebElement(getWebElement(By.id("firstName")), (String) Setup.getValueStore("driverName"));
-				sendDataToInputByWebElement(getWebElement(By.id("lastName")), getFaker().name().lastName());
-				sendDataToInputByWebElement(getWebElement(By.id("experienceYear")), 
-						String.valueOf(getFaker().number().numberBetween(3, 8)));
-				sendDataToInputByWebElement(getWebElement(By.id("email")), getFaker().internet().emailAddress());
-				
-				//Setting GoHeavy Ready Status
 				Setup.getActions().moveToElement(getWebElement(By.xpath("//input[@id='status']"))).build().perform();
 				waitAddittionalShortTime();
 				Setup.getActions().click(getWebElement(By.xpath("//input[@id='status']"))).build().perform();
@@ -168,123 +150,113 @@ public class DriverPage extends PageObject {
 				Setup.getActions().moveToElement(getWebElement(By.xpath("//div[text()='GoHeavy Ready']"))).build().perform();
 				waitAddittionalShortTime();
 				Setup.getActions().click(getWebElement(By.xpath("//div[text()='GoHeavy Ready']"))).build().perform();
-				
-				sendDataToInputByWebElement(getWebElement(By.id("address")), getFaker().address().streetName());
-				sendDataToInputByWebElement(getWebElement(By.id("addressCity")), getFaker().address().cityName());
-
 				formScrollImproved(formId, Integer.valueOf(Setup.getTimeouts().get("pageLoad").toString()));
-	
+				waitAddittionalShortTime();
+
+			} else {
+				String title = "Driver Photo (including shoulders)";
+				setImageImproved(title, null);
+
+				String name = getFaker().name().firstName();
+				Setup.setKeyValueStore("driverName", name);
+
+				sendDataToInputImproved("First Name", (String) Setup.getValueStore("driverName"), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				sendDataToInputImproved("Last Name", getFaker().name().lastName(), null, InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				int min_val = 22;
+				int max_val = 55;
+
+				ThreadLocalRandom tlr = ThreadLocalRandom.current();
+				int randomNum = tlr.nextInt(min_val, max_val + 1);
+
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+				String date_compare = dtf.format(LocalDateTime.now().plusYears(randomNum * -1));
+
+				sendDataToInputImproved("Birth Date", date_compare.toString(), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+				sendDataToInputImproved("Birth Date", null, Keys.RETURN,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				sendDataToInputImproved("Experience", String.valueOf(getFaker().number().numberBetween(3, 8)), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				sendDataToInputImproved("Mobile", "53" + (String) getFaker().number().digits(8), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				sendDataToInputImproved("Email", getFaker().internet().emailAddress(), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				//tShirtSize
+				//tShirtSize_list
+				interactAndRandomSelectFromDropDown("tShirtSize", "tShirtSize_list");
+
+				sendDataToInputImproved("Address", getFaker().address().streetName(), null, InputType.textarea, true, formId, 210);
+				waitAddittionalShortTime();
+
+				//addressStateId
+				//addressStateId_list
+				interactAndRandomSelectFromDropDown("addressStateId", "addressStateId_list");
+
+				sendDataToInputImproved("City", getFaker().address().cityName(), null, InputType.input, true, formId, 210);
+				waitAddittionalShortTime();
+
+				sendDataToInputImproved("ZIP Code", getFaker().address().zipCode(), null, InputType.input, true, formId, 210);
+				waitAddittionalShortTime();
+
+				//Driver's License Photo (Front)
 				title = "Driver's License Photo (Front)";
 				setImageImproved(title, null);
+
+				//Driver's License Photo (Back)
 				title = "Driver's License Photo (Back)";
 				setImageImproved(title, null);
-				
-				String xpath = "//*[@type='submit']";
-				Setup.getActions().click(getWebElement(By.xpath(xpath))).build().perform();
+
+				sendDataToInputImproved("Driver's License (DL) Number", "1" + String.valueOf(getFaker().number().digits(6)), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+
+				formScrollImproved(formId, Integer.valueOf(Setup.getTimeouts().get("pageLoad").toString()));
+
+				//dlClassType
+				//dlClassType_list
+				interactAndRandomSelectFromDropDown("dlClassType", "dlClassType_list");
+
+				min_val = 2;
+				max_val = 5;
+
+				randomNum = tlr.nextInt(min_val, max_val + 1);
+
+				dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+				date_compare = dtf.format(LocalDateTime.now().plusMonths((randomNum * -1)));
+
+				sendDataToInputImproved("DL Issued Date", date_compare.toString(), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+				sendDataToInputImproved("DL Issued Date", null, Keys.RETURN,
+						InputType.input, true, formId, 40);
+
+				date_compare = dtf.format(LocalDateTime.now().plusMonths((randomNum)));
+
+				sendDataToInputImproved("DL Expiration Date", date_compare.toString(), null,
+						InputType.input, true, formId, 40);
+				waitAddittionalShortTime();
+				sendDataToInputImproved("DL Expiration Date", null, Keys.RETURN,
+						InputType.input, true, formId, 40);
+
 			}
-			
-			sendDataToInputImproved("First Name", (String) Setup.getValueStore("driverName"), null, 
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			sendDataToInputImproved("Last Name", getFaker().name().lastName(), null,  InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			int min_val = 22;
-			int max_val = 55;
-			
-			ThreadLocalRandom tlr = ThreadLocalRandom.current();
-	        int randomNum = tlr.nextInt(min_val, max_val + 1);
-			
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-			String date_compare = dtf.format(LocalDateTime.now().plusYears(randomNum * -1));
-			
-			sendDataToInputImproved("Birth Date", date_compare.toString(), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			sendDataToInputImproved("Birth Date", null, Keys.RETURN,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			sendDataToInputImproved("Experience", String.valueOf(getFaker().number().numberBetween(3, 8)), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			sendDataToInputImproved("Mobile", "53" + (String) getFaker().number().digits(8), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			sendDataToInputImproved("Email", getFaker().internet().emailAddress(), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			//tShirtSize
-			//tShirtSize_list
-			interactAndRandomSelectFromDropDown("tShirtSize", "tShirtSize_list");
-			
-			sendDataToInputImproved("Address", getFaker().address().streetName(), null,  InputType.textarea, true, formId, 210);
-			waitAddittionalShortTime();
-			
-			//addressStateId
-			//addressStateId_list
-			interactAndRandomSelectFromDropDown("addressStateId", "addressStateId_list");
-			
-			sendDataToInputImproved("City", getFaker().address().cityName(), null,  InputType.input, true, formId, 210);
-			waitAddittionalShortTime();
-			
-			sendDataToInputImproved("ZIP Code", getFaker().address().zipCode(), null,  InputType.input, true, formId, 210);
-			waitAddittionalShortTime();
-			
-			//Driver's License Photo (Front)
-			title = "Driver's License Photo (Front)";
-			setImageImproved(title, null);
-			//acceptImage(title); <-- To prevent Clear Status
-			//New logic
-			/*Setup.setKeyValueStore("clearDriver", false);
-			if (randomNum < 42) {
-				acceptImage(title);
-				Setup.setKeyValueStore("clearDriver", true);
-			}*/
-			
-			//Driver's License Photo (Back)
-			title = "Driver's License Photo (Back)";
-			setImageImproved(title, null);
-		
-			sendDataToInputImproved("Driver's License (DL) Number", "1" + String.valueOf(getFaker().number().digits(6)), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			
-			formScrollImproved(formId, Integer.valueOf(Setup.getTimeouts().get("pageLoad").toString()));
-			
-			//dlClassType
-			//dlClassType_list
-			interactAndRandomSelectFromDropDown("dlClassType", "dlClassType_list");
-			
-			min_val = 2;
-			max_val = 5;
-			
-	        randomNum = tlr.nextInt(min_val, max_val + 1);
-			
-			dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-			date_compare = dtf.format(LocalDateTime.now().plusMonths((randomNum * -1)));
-			
-			sendDataToInputImproved("DL Issued Date", date_compare.toString(), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			sendDataToInputImproved("DL Issued Date", null, Keys.RETURN,  
-					InputType.input, true, formId, 40);
-			
-			date_compare = dtf.format(LocalDateTime.now().plusMonths((randomNum)));
-			
-			sendDataToInputImproved("DL Expiration Date", date_compare.toString(), null,  
-					InputType.input, true, formId, 40);
-			waitAddittionalShortTime();
-			sendDataToInputImproved("DL Expiration Date", null, Keys.RETURN,  
-					InputType.input, true, formId, 40);
-			
+			submitForm(formId);
 			String xpath = "//*[@type='submit']";
 			Setup.getActions().click(getWebElement(By.xpath(xpath))).build().perform();
-			//submitForm(formId);
+
 			return true;
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -296,25 +268,29 @@ public class DriverPage extends PageObject {
 		try {
 			waitForSpinningElementDissapear();
 			waitAddittionalTime();
-			
-			String class_value = "ant-tag ant-tag-blue";
+			waitAddittionalShortTime();
+			String class_value;
+			if (status.equals("Clear"))
+			class_value = "ant-tag ant-tag-green";
+			else if (status.equals("GoHeavy Ready"))
+				class_value = "ant-tag ant-tag-geekblue";
+			else
+			class_value = "ant-tag ant-tag-blue";
 			
 			/*if (Boolean.valueOf(Setup.getValueStore("clearDriver").toString())) {
 				status = "Clear";
 				class_value = "ant-tag ant-tag-green";
 			}*/
 			
-			Setup.getActions().sendKeys(getWebElement(By.xpath(""
-					+ "//input[@placeholder='Search...' and @type='text' and @class='ant-input']")), 
+			Setup.getActions().sendKeys(getWebElement(By.xpath("//input[@placeholder='Search...' and @type='text' and @class='ant-input']")),
 					(String) Setup.getValueStore("driverName")).build().perform();
 			
 			Setup.getWait().thread(500);
 			
-			Setup.getActions().click(getWebElement(By.xpath(""
-					+ "//button[@class='ant-btn ant-btn-icon-only ant-input-search-button']"))).build().perform();
+			Setup.getActions().click(getWebElement(By.xpath("//button[@class='ant-btn ant-btn-icon-only ant-input-search-button']"))).build().perform();
 			
 			Setup.getWait().thread(1000);
-			
+
 			String status_xpath = "//span[@class='" + class_value + "' and text()='" + status + "']";
 			WebElement element = getWebElement(By.xpath(status_xpath));
 
@@ -326,20 +302,13 @@ public class DriverPage extends PageObject {
 	}
 
 	public boolean userClicksOnDocumentsButton() {
-		try {
-			waitForSpinningElementDissapear();
-			waitAddittionalTime();
-			for (int i = 0;i <2;i++)
-				clickOnElement(getWebElement(By.xpath("//span[text()='Creation Date']")), true);
-			Setup.getWait().thread(500);
+		try{
 			clickOnElement(getWebElement(By.xpath("//span[@class='ant-tag ant-tag-blue' and text()='On-boarding']"
 					+ "/ancestor::tr[contains(@class, 'ant-table-row')]/descendant::span[@class='anticon anticon-file-text' "
 					+ "and @role='img']")), true);
-			
-			waitForSpinningElementDissapear();			
 			return true;
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage()+"Missing Documents button");
 			return false;
 		}
 	}
@@ -368,25 +337,35 @@ public class DriverPage extends PageObject {
 			for (int i = 0;i < elements.size();i++) {
 				clickOnElement(elements.get(i), true);
 				manageClearDocument();
+
 			}
+			clickOnElement(getWebElement(By.xpath("//button[contains(@class,'ant-btn ant-btn-primary')]")), true);
 			return true;
 		} catch(Exception e) {
 			return false;
 		}
 	}
-	
+
+	public boolean userClicksOnVehicleButton() {
+			clickOnElement(getWebElement(By.xpath("//span[@class='rifi_link_icon_action']/descendant::span[@role='img' and @class='anticon anticon-car']")), true);
+			return true;
+	}
+
 	private void manageClearDocument() {
 		// TODO Auto-generated method stub
-		waitAddittionalShortTime();
 		clickOnElement(getWebElement(By.xpath("//button[@type='submit']")), true);
 	}
 
 	public boolean userClicksUpdate() {
-		// TODO Auto-generated method stub
-		waitAddittionalTime();
-		waitForSpinningElementDissapear();
-		clickOnElement(getWebElement(By.xpath("//span[@role='img' and @class='anticon anticon-edit']")), true);
-		return true;
+		try {
+			waitAddittionalTime();
+			waitForSpinningElementDissapear();
+			clickOnElement(getWebElement(By.xpath("//span[@class='rifi_link_icon_action']/descendant::span[@role='img' and @class='anticon anticon-edit']")), true);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Missing the Edit button");
+			return false;
+		}
 	}
 
 	public boolean systemOpensEdit() {
@@ -396,16 +375,9 @@ public class DriverPage extends PageObject {
 
 	public boolean userClicksOnAssignButton() {
 		try {
-			waitForSpinningElementDissapear();
-			waitAddittionalTime();
-			for (int i = 0;i <2;i++)
-				clickOnElement(getWebElement(By.xpath("//span[text()='Creation Date']")), true);
-			Setup.getWait().thread(500);
 			clickOnElement(getWebElement(By.xpath("//span[@class='ant-tag ant-tag-green' and text()='Clear']"
-					+ "/ancestor::tr[contains(@class, 'ant-table-row')]/descendant::span[@class='anticon anticon-check-square' "
+					+ "/ancestor::tr[contains(@class, 'ant-table-row')]/descendant::span[@class='anticon anticon-edit' "
 					+ "and @role='img']")), true);
-			
-			waitForSpinningElementDissapear();			
 			return true;
 		} catch(Exception e) {
 			System.out.println(e.getMessage());

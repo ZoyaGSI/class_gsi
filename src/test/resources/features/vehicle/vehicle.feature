@@ -37,9 +37,8 @@ Feature: Add Vehicle 2.2
     When User clicks on "Add Vehicle" button.
 #    And The system opens the "Add Vehicle" view.
     And User hover overs a Vehicle document image component with an image loaded
-    And The user inserts valid data
-    And User clicks on the "Done" button.
-    Then System returns to the "Vehicles & Insurance List" view
+    And The user inserts valid vehicle data AND clicks on the Done button.
+    Then System returns to the "Vehicles & Insurance List" view.
     And System displays message "A new Vehicle was successfully created."
     And The System Creates a new Vehicle in "On-boarding" status.
     And The System registers the creation date.

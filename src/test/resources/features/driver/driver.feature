@@ -25,36 +25,32 @@
 #Background: Given Any user is logged
 #Sample Feature Definition Template
 
-Feature: Add Driver 2.3
-  As a: GoHeavy Admininstrator / Fleet Owner
-  I Want To: add a Driver	
-  So That: a new Driver is registered in the system.
-  
+Feature: Driver 2.3
+  As a: GoHeavy Administrator / Fleet Owner
+  I Want To: approve a driver documentation and vehicle
+  So That: a new Driver is activated in the system.
+
   Background:
-    #1. Scenario for Pure Driver Create
-    #Given Any "GoHeavy Administrator / Fleet Owner" is logged
-    #2. Scenario for Driver - Vehicle Assign
-    Given Any "GoHeavy Adm / Fleet Owner" is logged
+    Given Any "GoHeavy Admin / Fleet Owner" is logged
 
-  #Scenario: Add Vehicle 2.2 -- Add Driver
-  #  Given The user is in "Drivers List" view.
-  #  When User clicks on "Add Driver" button.
-  #  Then The system opens the "Add Driver" view.
-  #  When The user inserts valid driver data AND clicks on the "Done" button.
-  #  Then The System Creates a new Driver in "On-boarding" status.
-  #  And The System registers the creation date.
-    
-  #As a GoHeavy Admin / Fleet Owner/ Document Approver
-	#I want to edit the personal information of a Driver
-	#So that I can update the Driver's data allowed for the role and his Status.
-
-  Scenario: Add Vehicle 2.2 -- Edit Driver
+  Scenario: Add new Driver
     Given The user is in "Drivers List" view.
-    When User clicks on "Edit Driver" button.
-    #Added Logic Set Status to GoHeavy Ready
-    Then The system opens the "Edit Driver" view.
-    When The user inserts valid driver data AND clicks on the "Update" button.
-    #TODO: Here
-    #Then The System Creates a new Driver in "On-boarding" status.
-    #And The System registers the creation date.
-    
+    And User clicks on "Add Driver" button.
+    And The system opens the "Add Driver" view.
+    When The user inserts valid driver data AND clicks on the "Done" button.
+    And The user search the new Driver in "On-boarding" status.
+    And User clicks on Vehicle button.
+    And System returns to the "Vehicles & Insurance List" view.
+    And User clicks on "Add Vehicle" button.
+    And User hover overs a Vehicle document image component with an image loaded
+    And The user inserts valid vehicle data AND clicks on the Done button.
+    And The user is in "Drivers List" view.
+    And The user search the new Driver in "On-boarding" status.
+    Then User clicks on Documents button.
+    And The system displays the documents view.
+    And User clicks on "Approve" button.
+    And The user search the new Driver in "Clear" status.
+    And User clicks on "Edit Driver" button.
+    And The system opens the "Edit Driver" view.
+    And The user inserts valid driver data AND clicks on the "Update" button.
+    And The user search the new Driver in "GoHeavy Ready" status.

@@ -223,9 +223,9 @@ public class VehiculeInfoPage extends TabsPage {
     private void checkVehicleTypeComponentBehaviour() {
         waitForSpinningElementDissapear();
         try {
-            Setup.getWait().thread(150);
+//            Setup.getWait().thread(150);
             clickOn(getWebElement(By.id(getVehicleTypeID())));
-            Setup.getWait().thread(150);
+//            Setup.getWait().thread(150);
             Assert.assertNotNull("Vehicle types not found or none to show", getPageElementBy(By.xpath(
                     "//div[@class='rc-virtual-list-holder-inner']")));
             WebElement vehicle_type_list = getPageElementBy(By.xpath("//div[@class='rc-virtual-list-holder-inner']"));
@@ -238,7 +238,7 @@ public class VehiculeInfoPage extends TabsPage {
             int number = (int) (Math.random() * val + 1);
             hoverElement(null, element_list.get(number));
             clickOn(element_list.get(number));
-            Setup.getWait().thread(150);
+//            Setup.getWait().thread(150);
         } catch (Exception e) {
         }
     }

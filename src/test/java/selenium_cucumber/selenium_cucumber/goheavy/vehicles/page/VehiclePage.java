@@ -88,7 +88,7 @@ public class VehiclePage extends PageObject {
     public boolean goToVehiclesAndInsuranceListView() {
         try {
             waitForSpinningElementDissapear();
-            Setup.getWait().thread(1500);
+//            Setup.getWait().thread(1500);
             WebElement element = getWebElement(By.xpath(getVehiclesLiXpath()));
             clickOn(element);
             return true;
@@ -100,7 +100,7 @@ public class VehiclePage extends PageObject {
     public boolean clickOnAddVehicleButton() {
         try {
             waitForSpinningElementDissapear();
-            Setup.getWait().thread(3000);
+//            Setup.getWait().thread(3000);
             WebElement element = getWebElement(By.xpath(getAddVehicleButtonXpath()));
             clickOn(element);
             return true;
@@ -255,20 +255,20 @@ public class VehiclePage extends PageObject {
         waitForSpinningElementDissapear();
         try {
             setImage(getWebElement(By.xpath(getVINImageUploadItemXpath())), null);
-            Setup.getWait().thread(500);
-            Setup.getActions().moveToElement(getWebElement(By.xpath("//div[contains(@class, 'kxeirt')]/descendant::img")))
-                    .build().perform();
-            Setup.getWait().thread(500);
-
-            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-eye' and @cursor='pointer']")
-                    , null));
-            clickOn(getWebElement(By.xpath("//span[@role='img' and @class='anticon anticon-eye' and @cursor='pointer']")));
-            clickOn(getWebElement(By.xpath("//span[@class='anticon anticon-close ant-modal-close-icon' and @role='img']")));
-            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-check' and @cursor='pointer']")
-                    , null));
-            clickOn(getWebElement(By.xpath("//span[@role='img' and @class='anticon anticon-check' and @cursor='pointer']")));
-            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-close' and @cursor='pointer']")
-                    , null));
+//            Setup.getWait().thread(500);
+//            Setup.getActions().moveToElement(getWebElement(By.xpath("//div[contains(@class, 'kxeirt')]/descendant::img")))
+//                    .build().perform();
+//            Setup.getWait().thread(500);
+//
+//            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-eye' and @cursor='pointer']")
+//                    , null));
+//            clickOn(getWebElement(By.xpath("//span[@role='img' and @class='anticon anticon-eye' and @cursor='pointer']")));
+//            clickOn(getWebElement(By.xpath("//span[@class='anticon anticon-close ant-modal-close-icon' and @role='img']")));
+//            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-check' and @cursor='pointer']")
+//                    , null));
+//            clickOn(getWebElement(By.xpath("//span[@role='img' and @class='anticon anticon-check' and @cursor='pointer']")));
+//            Assert.assertTrue(hoverElement(By.xpath("//span[@role='img' and @class='anticon anticon-close' and @cursor='pointer']")
+//                    , null));
 
             return true;
         } catch (Exception e) {

@@ -40,7 +40,7 @@ public class VehicleStepDefinition {
         }
     }
 
-    @When("The user inserts valid data")
+    @When("The user inserts valid vehicle data AND clicks on the Done button.")
     public void the_user_inserts_valid_data_and_clicks_done_button() {
         try {
             vehicleStep.userInsertsValidDataAndClicksDone();
@@ -73,7 +73,7 @@ public class VehicleStepDefinition {
         }
     }
 
-    @Then("System returns to the \"Vehicles & Insurance List\" view")
+    @Then("System returns to the \"Vehicles & Insurance List\" view.")
     public void returns_to_view() {
         vehicleStep.returnToMainView();
     }

@@ -75,4 +75,8 @@ public class DriverStep extends Steps{
 		// TODO Auto-generated method stub
 		Assert.assertTrue(driverListPage.userClicksOnAssignButton());
 	}
+
+	public void user_clicks_on_vehicle_button() {
+		Assert.assertTrue(driverListPage.userClicksOnVehicleButton());
+	}
 }

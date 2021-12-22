@@ -37,6 +37,7 @@ public final class Setup {
 		timeouts.put("pageLoad", 50000000);
 		timeouts.put("script", 300000);
 		options.setCapability("timeouts", timeouts);
+		options.addArguments("user-data-dir=C:\\Users\\zoya\\IdeaProjects\\class_gsi_FT\\src\\main\\resources\\scache");
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		initObject();
